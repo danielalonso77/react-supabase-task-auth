@@ -1,34 +1,32 @@
 import "../App.css";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cliente } from "../backend/supabase.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
     try {
-      const result = await cliente.auth.signIn({
+      await cliente.auth.signIn({
         email,
       });
-      console.log(cliente.auth.user);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
   };
+  const navigation = useNavigate();
+  useEffect(() => {
+    if (cliente.auth.user()) {
+      navigation("/");
+    } else {
+      navigation("/login");
+    }
+  }, []);
 
   return (
     <div style={styles.container}>
-      <button
-        style={styles.button}
-        onClick={() => {
-          window.location.href = "/";
-        }}
-      >
-        Regresar
-      </button>
       <form style={styles.form} onSubmit={handleSubmit}>
         <label>
           <h1>Email:</h1>
@@ -82,8 +80,7 @@ const styles = {
     fontSize: "16px",
     backgroundColor: "#f5f5f5",
   },
-    backgroundColor:{
-        backgroundColor: "#f5f5f5",
-        
-    }
+  backgroundColor: {
+    backgroundColor: "#f5f5f5",
+  },
 };
