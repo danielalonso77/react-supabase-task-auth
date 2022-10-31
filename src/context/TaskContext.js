@@ -9,15 +9,18 @@ export const useTask = () => {
   return context;
 };
 
+//creacion de un provider
 export const TaskContextProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  //obtener las tareas
   const getTasks = async (done = false) => {
     setLoading(true);
     const user = cliente.auth.user();
 
+    //consulta en supabase
     const { error, data } = await cliente
       .from("tasks")
       .select("*")
@@ -25,17 +28,22 @@ export const TaskContextProvider = ({ children }) => {
       .eq("done", done)
       .order("id", { ascending: false });
 
+      //manejo de errores
     if (error) throw error;
 
+    //actualizar el estado del hook
     setTasks(data);
 
+    //cambiar el estado de loading
     setLoading(false);
   };
 
+  //actualizar una tarea
   const doneTask = async (id, updateField) => {
     console.log(id, updateField);
     setLoading(true);
 
+    //consulta en supabase
     const u = cliente.auth.user();
     const { error, data } = await cliente
       .from("tasks")
@@ -44,13 +52,16 @@ export const TaskContextProvider = ({ children }) => {
       .eq("uid", u.id);
     if (error) throw error;
 
+    //actualizar una tarea
     setTasks(tasks.filter((task) => task.id !== id));
     console.log(data);
     setLoading(false);
   };
 
+  //agregar una tarea
   const addTask = async (taskName) => {
     setAdding(true);
+    //manejo de errores
     try {
       const user = cliente.auth.user();
       console.log(user);
@@ -68,6 +79,7 @@ export const TaskContextProvider = ({ children }) => {
     }
   };
 
+  //eliminar una tarea
   const deleteTask = async (id) => {
     setLoading(true);
     console.log(id);
@@ -83,6 +95,8 @@ export const TaskContextProvider = ({ children }) => {
     setLoading(false);
   };
 
+
+  //valores del provider
   return (
     <TaskContext.Provider
       value={{
