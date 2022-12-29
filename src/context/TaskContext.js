@@ -14,7 +14,7 @@ export const TaskContextProvider = ({ children }) => {
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const getTasks = async (done = false) => {
+  async function getTasks(done = false) {
     setLoading(true);
     const user = cliente.auth.user();
 
@@ -25,12 +25,13 @@ export const TaskContextProvider = ({ children }) => {
       .eq("done", done)
       .order("id", { ascending: false });
 
-    if (error) throw error;
+    if (error)
+      throw error;
 
     setTasks(data);
 
     setLoading(false);
-  };
+  }
 
   const doneTask = async (id, updateField) => {
     console.log(id, updateField);

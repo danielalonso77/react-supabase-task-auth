@@ -1,0 +1,17 @@
+{
+  "providers": [
+    "awscloudformation"
+  ],
+  "projectName": "reactsupabasetaskaut",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "C:\\Users\\USR\\Desktop\\react-supabase-task-auth",
+      "DistributionDir": "C:\\Users\\USR\\Desktop\\react-supabase-task-auth",
+      "BuildCommand": "npm start",
+      "StartCommand": "npm start"
+    }
+  }
+}
